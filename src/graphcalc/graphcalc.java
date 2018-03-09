@@ -27,9 +27,9 @@ public class graphcalc extends JPanel  implements  MouseListener
 		addMouseListener(this);	 
 	}
 
+	public static final int size = 21;
 
 	//these variables store the coordinates of the camera. 
-
 	double camerax = 0;
 	double cameray = 0;
 	double cameraz = 0;
@@ -81,63 +81,38 @@ public class graphcalc extends JPanel  implements  MouseListener
 	int[] xpos = {0,0,0,0,0,0,0,0};
 	int[] ypos = {0,0,0,0,0,0,0,0};
 
-	double[] gridX = new double[]{
-		-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-			-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-			-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-			-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-			-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-			-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-			-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-			-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-			-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-			-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-			-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-			-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-			-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-			-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-			-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-			-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-			-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-			-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-			-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-			-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-			-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-	};
+	double[] gridX = new double[size*size];
+	double[] gridZ = new double[size*size];
+	double[] gridY= new double[size*size];
 
-	double[] gridZ = new double[]{
-		-10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10,
-			-9,  -9,  -9,  -9,  -9,  -9,  -9,  -9,  -9,  -9,  -9,  -9,  -9,  -9,  -9,  -9,  -9,  -9,  -9,  -9,  -9,
-			-8,  -8,  -8,  -8,  -8,  -8,  -8,  -8,  -8,  -8,  -8,  -8,  -8,  -8,  -8,  -8,  -8,  -8,  -8,  -8,  -8,
-			-7,  -7,  -7,  -7,  -7,  -7,  -7,  -7,  -7,  -7,  -7,  -7,  -7,  -7,  -7,  -7,  -7,  -7,  -7,  -7,  -7,
-			-6,  -6,  -6,  -6,  -6,  -6,  -6,  -6,  -6,  -6,  -6,  -6,  -6,  -6,  -6,  -6,  -6,  -6,  -6,  -6,  -6,
-			-5,  -5,  -5,  -5,  -5,  -5,  -5,  -5,  -5,  -5,  -5,  -5,  -5,  -5,  -5,  -5,  -5,  -5,  -5,  -5,  -5,
-			-4,  -4,  -4,  -4,  -4,  -4,  -4,  -4,  -4,  -4,  -4,  -4,  -4,  -4,  -4,  -4,  -4,  -4,  -4,  -4,  -4,
-			-3,  -3,  -3,  -3,  -3,  -3,  -3,  -3,  -3,  -3,  -3,  -3,  -3,  -3,  -3,  -3,  -3,  -3,  -3,  -3,  -3,
-			-2,  -2,  -2,  -2,  -2,  -2,  -2,  -2,  -2,  -2,  -2,  -2,  -2,  -2,  -2,  -2,  -2,  -2,  -2,  -2,  -2,
-			-1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-			0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
-			1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,
-			2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,
-			3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-			4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,
-			5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,
-			6,   6,   6,   6,   6,   6,   6,   6,   6,   6,   6,   6,   6,   6,   6,   6,   6,   6,   6,   6,   6,
-			7,   7,   7,   7,   7,   7,   7,   7,   7,   7,   7,   7,   7,   7,   7,   7,   7,   7,   7,   7,   7,
-			8,   8,   8,   8,   8,   8,   8,   8,   8,   8,   8,   8,   8,   8,   8,   8,   8,   8,   8,   8,   8,
-			9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,
-			10,  10,  10,  10,  10,  10,  10,  10,  10,  10,  10,  10,  10,  10,  10,  10,  10,  10,  10,  10,  10,
-	};
-	double[] gridY= new double[441];
-
-	double[] screengridX= new double[441];
-	double[] screengridY= new double[441];
-	double[] screengridZ= new double[441];
+	double[] screengridX= new double[size*size];
+	double[] screengridY= new double[size*size];
+	double[] screengridZ= new double[size*size];
 
 
-	int[] screenX= new int[441];
-	int[] screenY= new int[441];
+	int[] screenX= new int[size*size];
+	int[] screenY= new int[size*size];
         
+	
+	public void initialize() throws InterruptedException
+	{
+		for(int y = 0; y < size; y++)
+		{
+			for(int x = 0; x < size; x++)
+			{
+				gridX[y*size + x] = (double)(x - size/2);
+				gridZ[y*size + x] = (double)(y - size/2);
+			}
+		}
+		
+		while(true)
+		{
+			functions();
+			repaint(10);
+			Thread.sleep(10);
+		}
+	}
+	
 	
 	//   https://stackoverflow.com/questions/3422673/evaluating-a-math-expression-given-in-string-form
 	public static double eval(final String str) {
@@ -238,9 +213,9 @@ public class graphcalc extends JPanel  implements  MouseListener
 
 	private void graph()
 	{		
-		for(int i = 0; i< 21; i++)
+		for(int i = 0; i< size; i++)
 		{
-			for(int a = 0; a< 21; a++)
+			for(int a = 0; a< size; a++)
 			{
 				int x = a-10;
 				int z = i-10;
@@ -269,7 +244,7 @@ public class graphcalc extends JPanel  implements  MouseListener
 					thingstring = oldthingstring;
 					JOptionPane.showMessageDialog(null, "Invalid input.");
 				}
-				gridY[21*i +a] = -(double)(answer);
+				gridY[size*i +a] = -(double)(answer);
 			}
 		}
 	}
@@ -367,7 +342,7 @@ public class graphcalc extends JPanel  implements  MouseListener
 		double ydeg = 0;
 		int FOV = 180;
 		double focallength = 700/Math.tan(FOV/2);
-		for(int i = 0; i < 441; i++)
+		for(int i = 0; i < size*size; i++)
 		{
 			double realxdif = gridX[i];
 			double realydif = gridY[i];
@@ -452,10 +427,10 @@ public class graphcalc extends JPanel  implements  MouseListener
 		g2d.drawString("Y_MINIMUM", screenaxisXvalues[4], screenaxisYvalues[4]);
 		g2d.drawString("Y_MAXIMUM", screenaxisXvalues[5], screenaxisYvalues[5]);
 		g2d.setPaint(Color.red);
-		for(int i = 0; i<441; i++)
+		for(int i = 0; i<size*size; i++)
 		{
 			//g2d.fillOval(screenX[i], screenY[i], 2, 2);
-			for(int a = 0; a<441; a++)
+			for(int a = 0; a<size*size; a++)
 			{
 				if(gridX[i] == gridX[a]&& (gridZ[i]+1 == gridZ[a]) && screengridZ[i] < 50 && screengridZ[a] < 50)
 				{
@@ -494,6 +469,7 @@ public class graphcalc extends JPanel  implements  MouseListener
 
 
 	}
+	
 	public static void main(String[] args) throws InterruptedException 
 	{
 		JFrame frame = new JFrame("3d graphing calculator");
@@ -502,14 +478,7 @@ public class graphcalc extends JPanel  implements  MouseListener
 		frame.setSize(1000, 700);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		new graphcalc();
-		while (true) 
-		{
-
-			game.functions();
-			game.repaint();
-			Thread.sleep(10);
-		}
+		game.initialize();
 	}
 }
 
