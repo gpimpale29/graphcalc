@@ -20,11 +20,12 @@ import java.awt.event.KeyEvent;
 
 
 @SuppressWarnings("serial")
-public class graphcalc extends JPanel  implements  MouseListener
+public class graphcalc extends JPanel  implements  MouseListener, MouseMotionListener
 {	
 	public graphcalc()
 	{
 		addMouseListener(this);	 
+		addMouseMotionListener(this);
 	}
 
 	public static final int size = 21;
@@ -89,7 +90,6 @@ public class graphcalc extends JPanel  implements  MouseListener
 	double[] screengridY= new double[size*size];
 	double[] screengridZ= new double[size*size];
 
-
 	int[] screenX= new int[size*size];
 	int[] screenY= new int[size*size];
         
@@ -101,7 +101,7 @@ public class graphcalc extends JPanel  implements  MouseListener
 			for(int x = 0; x < size; x++)
 			{
 				gridX[y*size + x] = (double)(x - size/2);
-				gridZ[y*size + x] = (double)(y - size/2);
+				gridY[y*size + x] = (double)(y - size/2);
 			}
 		}
 		
@@ -213,19 +213,19 @@ public class graphcalc extends JPanel  implements  MouseListener
 
 	private void graph()
 	{		
-		for(int i = 0; i< size; i++)
+		for(int i = 0; i < size; i++)
 		{
-			for(int a = 0; a< size; a++)
+			for(int a = 0; a < size; a++)
 			{
-				int x = a-10;
-				int z = i-10;
+				int x = a-size/2;
+				int y = i-size/2;
 				String stringx = Integer.toString(x);
-				String stringz = Integer.toString(z);
+				String stringy = Integer.toString(y);
 				String newthingstring = thingstring.replaceAll("x", stringx);
-				newthingstring = newthingstring.replaceAll("y", stringz);
+				newthingstring = newthingstring.replaceAll("y", stringy);
 				newthingstring = newthingstring.replaceAll("pi", "3.1415");
 				double answer = 0;
-				try
+				try 
 				{
 					answer = (eval(newthingstring));
 				}
@@ -244,7 +244,7 @@ public class graphcalc extends JPanel  implements  MouseListener
 					thingstring = oldthingstring;
 					JOptionPane.showMessageDialog(null, "Invalid input.");
 				}
-				gridY[size*i +a] = -(double)(answer);
+				gridZ[size*i +a] = -(double)(answer);
 			}
 		}
 	}
@@ -285,6 +285,30 @@ public class graphcalc extends JPanel  implements  MouseListener
 		mousedown = false;
 
 	}
+	
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
+		
+		pmousex = mousex;
+		pmousey = mousey;
+		mousex = arg0.getX();
+		mousey = arg0.getY();
+		
+		if(mousex < 700 && mousey < 700)
+		{
+			cameraxrotation -= (mousex-pmousex)/180;
+			camerayrotation -= (mousey-pmousey)/180;
+		}
+	}
+
+
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+		pmousex = mousex;
+		pmousey = mousey;
+		mousex = arg0.getX();
+		mousey = arg0.getY();
+	}
 
 	int[] axisXvalues = {-20,20,0,0,0,0};
 	int[] axisYvalues = {0,0,-20,20,0,0};
@@ -300,53 +324,22 @@ public class graphcalc extends JPanel  implements  MouseListener
 
 	private void functions()
 	{
-		pmousex = mousex;
-		pmousey = mousey;
-		mousex = (MouseInfo.getPointerInfo().getLocation().getX() -8);
-		mousey = (MouseInfo.getPointerInfo().getLocation().getY() -24);
-
 		render();
 	}
 	private void render()
 	{
-
-		if(mousedown == true && mousex < 700 && mousey < 700)
-		{
-
-			/*
-			   if(mousex-pmousex > 0)
-			   {
-			   cameraxrotation -= 0.01;
-			   }
-
-			   if(mousex-pmousex < 0)
-			   {
-			   cameraxrotation += 0.01;
-			   }
-
-			   if(mousey-pmousey > 0)
-			   {
-			   camerayrotation -= 0.01;
-			   }
-
-			   if(mousey-pmousey < 0)
-			   {
-			   camerayrotation += 0.01;
-			   }*/
-			cameraxrotation -= (mousex-pmousex)/180;
-			camerayrotation -= (mousey-pmousey)/180;
-			//System.out.println((mousex-pmousex));
-		}
-
 		double xdeg = 0;
 		double ydeg = 0;
 		int FOV = 180;
 		double focallength = 700/Math.tan(FOV/2);
+		
+		
 		for(int i = 0; i < size*size; i++)
 		{
 			double realxdif = gridX[i];
 			double realydif = gridY[i];
 			double realzdif = gridZ[i];
+			
 			screengridX[i]= (double)(Math.cos(cameraxrotation)*realxdif +  Math.sin(cameraxrotation)*Math.sin(-camerayrotation)*realydif- Math.sin(cameraxrotation)*Math.cos(-camerayrotation)*realzdif);
 			screengridY[i]= (double)(0 +  Math.cos(-camerayrotation)*realydif +  Math.sin(-camerayrotation)*realzdif);
 			screengridZ[i]= cameraz +(double)(Math.sin(cameraxrotation)*realxdif  +  Math.cos(cameraxrotation)*(-Math.sin(-camerayrotation))*realydif +  Math.cos(cameraxrotation)* Math.cos(-camerayrotation)*realzdif); 
@@ -432,11 +425,11 @@ public class graphcalc extends JPanel  implements  MouseListener
 			//g2d.fillOval(screenX[i], screenY[i], 2, 2);
 			for(int a = 0; a<size*size; a++)
 			{
-				if(gridX[i] == gridX[a]&& (gridZ[i]+1 == gridZ[a]) && screengridZ[i] < 50 && screengridZ[a] < 50)
+				if(gridX[i] == gridX[a] && (gridY[i]+1 == gridY[a]))
 				{
 					g2d.drawLine(screenX[a], screenY[a], screenX[i], screenY[i]);
 				}
-				if(gridZ[i] == gridZ[a]&& (gridX[i]+1 == gridX[a]) && screengridZ[i] < 50 && screengridZ[a] < 50)
+				if(gridY[i] == gridY[a] && (gridX[i]+1 == gridX[a]))
 				{
 					g2d.drawLine(screenX[a], screenY[a], screenX[i], screenY[i]);
 				}
