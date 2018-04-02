@@ -20,9 +20,9 @@ import java.awt.event.KeyEvent;
 
 
 @SuppressWarnings("serial")
-public class graphcalc extends JPanel  implements  MouseListener, MouseMotionListener
+public class GraphingCalculator extends JPanel  implements  MouseListener, MouseMotionListener
 {	
-	public graphcalc()
+	public GraphingCalculator()
 	{
 		addMouseListener(this);	 
 		addMouseMotionListener(this);
@@ -466,7 +466,7 @@ public class graphcalc extends JPanel  implements  MouseListener, MouseMotionLis
 	public static void main(String[] args) throws InterruptedException 
 	{
 		JFrame frame = new JFrame("3d graphing calculator");
-		graphcalc game = new graphcalc();
+		GraphingCalculator game = new GraphingCalculator();
 		frame.add(game);
 		frame.setSize(1000, 700);
 		frame.setVisible(true);
