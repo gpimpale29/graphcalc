@@ -18,7 +18,6 @@ import java.awt.MouseInfo;
 import java.awt.event.KeyEvent;
 
 
-
 @SuppressWarnings("serial")
 public class GraphingCalculator extends JPanel  implements  MouseListener, MouseMotionListener
 {	
